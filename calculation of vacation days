@@ -1,0 +1,18 @@
+print("Привет, сейчас я посчитаю сколько дней отпуска ты накопил.")
+year_in_work=int(input("Введите год трудоустройства:"))
+month_in_work=int(input("Введите месяц трудоустройства:"))
+from datetime import timedelta, datetime, date
+now = current_date = date.today()  
+now=str(now)
+year=now[0:4]
+month=now[5:7]
+year=int(year)
+month=int(month)
+delta_year=year-year_in_work
+delta_month=month-month_in_work
+move_year_in_day=delta_year*12
+if delta_month == int('1'):
+    print('Ты че пес, устал уже? Иди работай мудак!')
+elif delta_month > int('1'):
+    result=(29.3/12)*(move_year_in_day+delta_month) #Формула расчета кол-ва дней отпуска(29,3 / 12) * общее количество отработанных месяцев
+    print(result)       
