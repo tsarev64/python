@@ -1,0 +1,17 @@
+from selenium import webdriver
+import time, webbrowser
+from webdriver_manager.chrome import ChromeDriverManager
+
+driver = webdriver.Chrome(ChromeDriverManager().install())
+
+driver.get('https://mob2.gazprombank.ru/logon/LogonPoint/index.html');
+time.sleep(2)
+login = driver.find_element_by_id('login').send_keys('LOGIN')
+#time.sleep(1)
+pwd = driver.find_element_by_id('passwd').send_keys('PASSWORD')
+#time.sleep(1)
+pwd = driver.find_element_by_id('passwd1').send_keys('2_authentication')
+#time.sleep(1)
+login_btn = driver.find_element_by_id('index_login_button').click()
+time.sleep(2)
+driver.close()
