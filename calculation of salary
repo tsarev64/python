@@ -1,0 +1,41 @@
+#name = str(input("Как тебя зовут?\n"))
+zp = int(input("Укажите заработную плату округлив до тысяч?\n"))
+prize = int(input("\nВведите-'1',если вы неполучаете премию,\nВведите-'2', если вы получаете премию:\n"))
+if prize == str("нет") or prize == str("ytn") or prize == int("1"):
+    ndfl=0.13
+    after_ndfl=0.87
+    vozv=zp * 1000
+    result_ndfl=vozv*ndfl
+    result_after_ndfl=vozv*after_ndfl
+    one_day=result_after_ndfl/21
+    print("Итак","заработная плата после вычита составит:",result_after_ndfl,"рублей","\nНалоговый вычит составит:",result_ndfl,"рублей","\nСтоимость одного рабочего дня:",one_day,"рублей.")
+elif prize == ("да") or prize == str("lf") or prize == int("2"):
+     print ("Премия фиксированная или часть от оклада?\n")
+     prize_perc = int(input("\nВведите-'1',если фиксированная,\nВведите-'2', если процент от оклада:\n"))
+     if prize_perc == int("1"): 
+         print("Укажите премиальную часть округлив до тысяч:\n")
+         prize_value = int(input())
+         ndfl=0.13
+         after_ndfl=0.87
+         vozv=zp * 1000
+         prize_value_vozv=prize_value*1000
+         result_ndfl=vozv*ndfl
+         result_after_ndfl=vozv*after_ndfl
+         prize_after_ndfl=prize_value_vozv*after_ndfl
+         result_after_ndfl_with_prize=result_after_ndfl+prize_after_ndfl
+         one_day=result_after_ndfl/21
+         print("Итак","заработная плата после вычита составит:",result_after_ndfl,"рублей","\nНалоговый вычит составит:",result_ndfl,"рублей","\nСтоимость одного рабочего дня:",one_day,"рублей.")
+         print("Премия после вычита составит:",prize_after_ndfl,"рублей","\nСуммарный доход с учетом премии составит:",result_after_ndfl_with_prize,"рублей")
+     elif prize_perc == int("2"):
+         print("Введите процент премии от оклада:\n")
+         prize_value = int(input())
+         ndfl=0.13
+         after_ndfl=0.87
+         vozv=zp * 1000
+         result_ndfl=vozv*ndfl
+         result_after_ndfl=vozv*after_ndfl
+         prize_after_ndfl=result_after_ndfl*prize_value/100
+         result_after_ndfl_with_prize=result_after_ndfl+prize_after_ndfl
+         one_day=result_after_ndfl/21
+         print("Итак","заработная плата после вычита составит:",result_after_ndfl,"рублей","\nНалоговый вычит составит:",result_ndfl,"рублей","\nСтоимость одного рабочего дня:",one_day,"рублей.")
+         print("Премия от оклада составит:",prize_after_ndfl,"рублей","\nСуммарный доход с учетом премии составит:",result_after_ndfl_with_prize,"рублей")
