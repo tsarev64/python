@@ -1,7 +1,7 @@
+from datetime import timedelta, datetime, date
 print("Привет, сейчас я посчитаю сколько дней отпуска ты накопил.")
 year_in_work=int(input("Введите год трудоустройства:"))
 month_in_work=int(input("Введите месяц трудоустройства:"))
-from datetime import timedelta, datetime, date
 now = current_date = date.today()  
 now=str(now)
 year=now[0:4]
