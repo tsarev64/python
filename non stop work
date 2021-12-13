@@ -1,0 +1,9 @@
+import time
+import pyautogui 
+for i in range(10):
+      pyautogui.click(200, 220)
+      pyautogui.press ('up')
+      pyautogui.click(button='right')
+      pyautogui.click(0, 100)
+      pyautogui.press ('left')
+      time.sleep(120)
