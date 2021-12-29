@@ -1,0 +1,23 @@
+import telebot
+from telebot import types
+token='5086104901:AAHaSrh1ZJQWQ9QPoOwZVdUbOpsI2zOetpI'
+bot=telebot.TeleBot(token)
+@bot.message_handler(commands=['start'])
+def start_message(message):
+    bot.send_message(message.chat.id,'Для выбора времени записи введите /button')
+@bot.message_handler(commands=['button'])
+def button_message(message):
+    markup=types.ReplyKeyboardMarkup(resize_keyboard=True)
+    item1=types.KeyboardButton("1")
+    markup.add(item1)
+    bot.send_message(message.chat.id,'Выберите удобную для вас дату для записи',reply_markup=markup)
+@bot.message_handler(content_types='text')
+def message_reply(message):
+    if message.text=="1":
+        markup=types.ReplyKeyboardMarkup(resize_keyboard=True)
+        item1=types.KeyboardButton("Кнопка 2")
+        markup.add(item1)
+        bot.send_message(message.chat.id,'Выберите что вам надо',reply_markup=markup)
+    elif message.text=="Кнопка 2":
+        bot.send_message(message.chat.id,'Споки ноки!')
+bot.polling(none_stop=True)
