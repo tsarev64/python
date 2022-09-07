@@ -1,0 +1,14 @@
+import pybase64
+import time
+import os
+
+timestr = time.strftime("%H%M%S")
+while True:
+  filepath = input("path to the file: ")
+  with open(filepath, "rb") as file:
+    readfile = file.read()
+    encoded = pybase64.b64encode(readfile)
+    result = open(('encoded' + timestr + '.txt'), 'wb') 
+    result.write(encoded)
+    result.close()
+    print(encoded)
