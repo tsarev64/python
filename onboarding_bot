@@ -1,0 +1,42 @@
+import telebot
+from telebot import types
+token='5086104901:AAHaSrh1ZJQWQ9QPoOwZVdUbOpsI2zOetpI'
+bot=telebot.TeleBot(token)
+@bot.message_handler(commands=["start"])
+def inline(message):
+  key = types.InlineKeyboardMarkup()
+  but_1 = types.InlineKeyboardButton(text="Административные", callback_data="NumberOne")
+  but_2 = types.InlineKeyboardButton(text="Confluence", callback_data="NumberTwo")
+  but_3 = types.InlineKeyboardButton(text="Инструменты", callback_data="NumberTree")
+  key.add(but_1, but_2, but_3)
+  bot.send_message(message.chat.id, "Привет! Выбери пункт меню:", reply_markup=key)
+
+@bot.callback_query_handler(func=lambda c:True)
+def inline(c):
+  if c.data == 'NumberOne':
+    keyboard = types.InlineKeyboardMarkup()
+    url_btn_1 = types.InlineKeyboardButton(text="Почта", url="https://owa.rencredit.ru/")
+    url_btn_2 = types.InlineKeyboardButton(text="Внутренний портал", url="https://intranet.rencredit.ru/")
+    url_btn_3 = types.InlineKeyboardButton(text="HPSM", url="https://helpdesk1.rencredit.ru/")
+    url_btn_4 = types.InlineKeyboardButton(text="Стол аналитика", url="https://dit.rencredit.ru/jira/secure/Dashboard.jspa")
+    keyboard.add(url_btn_1,url_btn_2,url_btn_3,url_btn_4)
+    bot.send_message(c.message.chat.id, 'Административные', reply_markup=keyboard)
+  if c.data == 'NumberTwo':
+     keyboard = types.InlineKeyboardMarkup()
+     url_btn_1 = types.InlineKeyboardButton(text="Пространство команды", url="https:/ence/display/INT/IntegrationTeam")
+     url_btn_2 = types.InlineKeyboardButton(text="Новичкам", url="https:/age.action?pageId=133239185")
+     url_btn_3 = types.InlineKeyboardButton(text="Новичкам_2", url="https:/iewpage.action?pageId=74947623")
+     url_btn_4 = types.InlineKeyboardButton(text="Матрица коммуникаций", url="https:tion?pageId=113647568")
+     keyboard.add(url_btn_1,url_btn_2,url_btn_3,url_btn_4)
+     bot.send_message(c.message.chat.id, 'Confluence', reply_markup=keyboard)
+  if c.data == 'NumberTree':
+    keyboard = types.InlineKeyboardMarkup()
+    url_btn_1 = types.InlineKeyboardButton(text="Swag_Edit", url="https://editor.swagger.io/")
+    url_btn_2 = types.InlineKeyboardButton(text="asciidoctor_man", url="https://docs.asciidoctor.org/asciidoc/latest/lists/continuation/")
+    url_btn_3 = types.InlineKeyboardButton(text="Plant_Edit", url="https://plantuml-editor.kkeisuke.com/")
+    url_btn_4 = types.InlineKeyboardButton(text="СУБД_creat", url="https://app.dbdesigner.net/designer/schema/guest_template")
+    keyboard.add(url_btn_1,url_btn_2,url_btn_3,url_btn_4)
+    bot.send_message(c.message.chat.id, 'Инструменты', reply_markup=keyboard)
+bot.polling(none_stop=True)
+
+bot.infinity_polling(timeout=10, long_polling_timeout = 5)
