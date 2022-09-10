@@ -1,0 +1,26 @@
+from telebot import TeleBot
+
+
+bot = TeleBot('5086104901:AAHaSrh1ZJQWQ9QPoOwZVdUbOpsI2zOetpI')  # insert token
+
+@bot.message_handler(commands=["start"])
+def main(message):
+    bot.send_message(message.chat.id, text=[
+        "Добрый день, для получения помощи необходимо написать обращение по форме:"
+        "\nЧто:"
+        "\nГде:"
+        "\nКогда:"
+        "\nСообщения поданные в другом формате рассмотрены не будут"
+    ]
+    )
+
+@bot.message_handler(content_types=["text"]) # get message
+def some_funtion(message): #fuction name
+    bot.send_message('-1001664460273', message.text) #chat_id, message from forward
+
+
+if __name__ == '__main__':
+    bot.polling(none_stop=True)
+
+#https://api.telegram.org/botTOKEN/getUpdates get chat_id 
+#example "chat":{"id":-1001664460273,
