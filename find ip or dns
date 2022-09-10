@@ -1,0 +1,5 @@
+import socket
+while True:
+  ins = input("Введите ip-адрес или название сервера: ")
+  aa = socket.gethostbyaddr(ins)
+  print ("DNS: ",aa[0],"\n","IP: ", aa[2])
