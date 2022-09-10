@@ -1,0 +1,99 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+#import libr
+import os, sys
+import telebot
+import time
+import datetime
+from datetime import date
+import shutil
+from jproperties import Properties 
+
+#open property
+configs = Properties()
+with open('app-config.properties', 'rb') as config_file: configs.load(config_file)
+
+dic = configs.get("DIC").data
+dicExc = configs.get("DIC-EXC").data
+audit = configs.get("AUDIT").data
+bkp = configs.get("BKP").data
+path = configs.get("PATH").data
+
+
+# token from botfather
+bot = telebot.TeleBot('5384705861:AAFHHakPYBgzisLKJl1wsNxME9TBU_LfUvA') 
+# function processing command start
+#current_date = date.today()
+@bot.message_handler(commands=["start"])
+def start(m, res=False):
+    bot.send_message(m.chat.id, 'Привет!👐\nОтправляй мне аббревиатуры, и я постараюсь найти, что они значат.')
+# get essage from user
+@bot.message_handler(content_types=["text"])
+def handle_text(message):
+        #logging
+    dtn = datetime.datetime.now()
+    botlogfile = open(audit, 'a')
+    print(dtn.strftime("%d-%m-%Y %H:%M"), 'user ' + message.from_user.first_name, message.from_user.id, 'write: ' + message.text, file=botlogfile)
+    botlogfile.close()
+  #send bkp-dic file
+    if message.text.lower() == 'get-bkp':
+      with open(bkp,'rb') as doc:
+        bot.send_document(message.chat.id, doc)
+        bot.send_document(message.chat.id, "FILEID")
+  #send audit file
+    if message.text.lower() == 'get-audit':
+      with open(audit,'rb') as doc:
+        bot.send_document(message.chat.id, doc)
+        bot.send_document(message.chat.id, "FILEID")
+  #send dic file
+    if message.text.lower() == 'get-dic':
+      shutil.copyfile( dic, bkp )
+      with open(dic,'rb') as doc:
+        bot.send_document(message.chat.id, doc)
+        bot.send_document(message.chat.id, "FILEID")
+  #send not find abbr file
+    if message.text.lower() == 'get-exc':
+      with open(dicExc,'rb') as doc:
+        bot.send_document(message.chat.id, doc)
+        bot.send_document(message.chat.id, "FILEID") 
+  #find abbr in dic
+    FIND = message.text.upper()
+    with open(dic, encoding="utf-8") as openfile:
+        array = []
+        for line in openfile:
+            if FIND in line:
+                array.append(line)
+  #response exception message + save find abbr
+    if not array:
+        bot.send_message(message.chat.id,
+'Аббревиатура не найдена, но я ее записал.🙈\n\
+Возвращaйся позже и я смогу тебе подсказать.\n\
+Ты можешь прислать мне аббревиатуру в формате: \nАБР-расшифровка.\n\
+После проверки аббривиатура будет добавлена в словарь.')
+        exc=open(dicExc, 'a')
+        exc.write('\n' + FIND)
+        exc.close()
+        #bot.send_message(message.chat.id,
+#'Аббревиатура принята. После проверки администратором, будет принято решение о добавлении в словарь')
+    else:
+        for i in array:
+            bot.send_message(message.chat.id, i)
+  #get new dic
+@bot.message_handler(content_types=['document']) # перечисление того что может принять бот
+def addfile(message):
+    os.remove(dic)
+    file_info = bot.get_file(message.document.file_id)
+    downloaded_file = bot.download_file(file_info.file_path)
+    src = path + message.document.file_name;
+    with open(src, 'wb') as new_file:
+        new_file.write(downloaded_file)
+    file_oldname = os.path.join(path, message.document.file_name)
+    file_newname_newfile = os.path.join(path, "dic.txt")
+    os.rename(file_oldname, file_newname_newfile)
+    bot.reply_to(message, "Словарь обновлен")
+# from debug start bot
+bot.polling(none_stop=True, interval=0)
+
+
+
+     
