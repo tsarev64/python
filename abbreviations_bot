@@ -21,7 +21,7 @@ path = configs.get("PATH").data
 
 
 # token from botfather
-bot = telebot.TeleBot('5384705861:AAFHHakPYBgzisLKJl1wsNxME9TBU_LfUvA') 
+bot = telebot.TeleBot('XXXXXXXXXXXX') 
 # function processing command start
 #current_date = date.today()
 @bot.message_handler(commands=["start"])
