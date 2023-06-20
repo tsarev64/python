@@ -1,0 +1,44 @@
+import requests
+from dadata import Dadata
+import json
+import os
+import time
+#Выводим инфо что делает скрипт
+print(\
+    "Программа выполняет следующие действия:\n"
+    "1. Проверяет наличие файла с ИНН в каталоге Desktop\n"
+    "2. Получает ИНН из файла и каждый из них проверяет в dadata\n"
+    "3. Результат выводится на экран\n"
+)
+#Даем время осознать
+seconds = 3
+
+while seconds > 0:
+    print("Старутуем через", seconds)
+    time.sleep(1)
+    seconds -= 1
+#идем за файлом в котором лежат инн. В файле должны содержаться ИНН в формате 1 строка == 1 ИНН
+desktop_path = os.path.join(os.environ['USERPROFILE'], 'Desktop')
+file_path = os.path.join(desktop_path, 'inn.txt')
+#если файл найден, то выполняем запрос в дадата.
+if os.path.exists(file_path):
+    with open(file_path, 'r') as f:
+        inns = f.readlines()
+        inns = [inn.strip() for inn in inns]
+        for inn in inns:
+            token = "f73308a84a15dbb0519a553f1fb9d9400a8ad136"
+            dadata = Dadata(token)
+            result = dadata.find_by_id("party", inn)
+            json_string = json.dumps(result)
+#Проверяем есть ли в выводе статус LIQUIDATING
+            if "LIQUIDATING" in json_string:
+#Если есть берем из файла ИНН который сейчас проверяли, дописываем статус
+                print(f'ИНН {inn} - Ликвидируется')
+#Если нет берем из файла ИНН который сейчас проверяли, дописываем статус
+            else:
+                print(f'ИНН {inn} - Не ликвидируется')
+        input("Для завершения работы нажмите ВВОД")
+#Если файл с инн не найден выводим ошибку и даем рекомендацию куда положить файл
+else:
+    print("Ошибка: файл не найден. Разместите файл по пути:", desktop_path)
+    input("Для выхода из программы нажмите ВВОД")
