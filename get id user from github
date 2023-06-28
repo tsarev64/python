@@ -1,0 +1,44 @@
+import requests
+
+# Функция для получения ID пользователя по имени
+def get_user_id(username):
+    url = f"https://api.github.com/users/{username}"
+    response = requests.get(url)
+    if response.status_code == 200:
+        data = response.json()
+        return data["id"]
+    else:
+        return None
+
+# Функция для обработки сообщений пользователя
+def process_message(message):
+    # Разделение списка имен, разделитель - запятая
+    names = message.split(",")
+    
+    # Создание словаря для хранения информации об идентификаторах
+    result = {}
+    
+    # Перебор каждого имени и получение соответствующего идентификатора
+    for name in names:
+        name = name.strip()  # Удаление лишних пробелов вокруг имени
+        user_id = get_user_id(name)
+        
+        # Добавление информации в результат, если удалось получить ID
+        if user_id:
+            result[name] = user_id
+    
+    # Возвращение результата в виде строки
+    return str(result)
+
+# Основной цикл программы
+while True:
+    # Получение сообщения от пользователя
+    message = input("Введите список имен пользователей (разделите запятой): ")
+    
+    # Выход из программы, если пользователь ввел "exit"
+    if message.lower() == "exit":
+        break
+    
+    # Обработка сообщения и отправка результата пользователю
+    response = process_message(message)
+    print("Результат:", response)
