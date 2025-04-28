@@ -67,8 +67,18 @@ class EventStates(StatesGroup):
 
 # Функция для расчета текущего дня спринта
 def calculate_sprint_day(current_date: datetime) -> int:
-    days_since_start = (current_date - SPRINT_START_DATE).days
-    current_sprint_day = days_since_start % SPRINT_DURATION_DAYS + 1
+    if current_date < SPRINT_START_DATE:
+        raise ValueError("Текущая дата не может быть раньше даты начала спринта.")
+    
+    workday_count = 0
+    current_day = SPRINT_START_DATE
+    
+    while current_day <= current_date:
+        if current_day.weekday() < 5:
+            workday_count += 1
+        current_day += timedelta(days=1)
+    
+    current_sprint_day = (workday_count - 1) % SPRINT_DURATION_DAYS + 1
     return current_sprint_day
 
 # Проверка на выходной
